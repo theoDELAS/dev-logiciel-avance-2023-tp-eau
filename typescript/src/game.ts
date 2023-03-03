@@ -29,6 +29,10 @@ export class Game {
         return "Rock Question " + index;
     }
 
+    public  getConsole() {
+        return this._console;
+    }
+
     public add(name: string): boolean {
         this.players.push(name);
         this.places[this.howManyPlayers()] = 0;
