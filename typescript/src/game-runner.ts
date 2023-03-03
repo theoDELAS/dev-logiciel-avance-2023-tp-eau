@@ -1,24 +1,29 @@
 import {Game} from './game';
+import {SystemConsole} from "./SystemConsole";
 
 export class GameRunner {
     public static main(): void {
-        const game = new Game();
+        const game = new Game(new SystemConsole());
         game.add("Chet");
         game.add("Pat");
         game.add("Sue");
 
-        let notAWinner;
-        do {
+        if(game.isNumberOfPlayerValid()) {
+            let notAWinner;
+            do {
 
-            game.roll(Math.floor(Math.random() * 6) + 1);
-        
-            if (Math.floor(Math.random() * 10) == 7) {
-            notAWinner = game.wrongAnswer();
-            } else {
-            notAWinner = game.wasCorrectlyAnswered();
-            }
-        
-        } while (notAWinner);
+                game.roll(Math.floor(Math.random() * 6) + 1);
+
+                if (Math.floor(Math.random() * 10) == 7) {
+                    notAWinner = game.wrongAnswer();
+                } else {
+                    notAWinner = game.wasCorrectlyAnswered();
+                }
+
+            } while (notAWinner);
+        } else {
+            game._console.WriteLine("The game shouls contain 2 players minimum and 6 players maximum");
+        }
     }
 }
 
