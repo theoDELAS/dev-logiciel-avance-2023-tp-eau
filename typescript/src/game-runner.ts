@@ -22,7 +22,7 @@ export class GameRunner {
                 }
             } while (notAWinner);
         } else {
-            game.getConsole().WriteLine("The game shouls contain 2 players minimum and 6 players maximum");
+            game.getConsole().WriteLine("The game should contain 2 players minimum and 6 players maximum");
         }
     }
 }

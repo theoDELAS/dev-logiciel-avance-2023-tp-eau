@@ -60,7 +60,7 @@ export class Game {
 
         if (this.inPenaltyBox[this.currentPlayer]) {
             if (roll % 2 != 0) {
-                this.isGettingOutOfPenaltyBox = true;
+                this.inPenaltyBox[this.currentPlayer]  = false;
 
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is getting out of the penalty box");
                 this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll;
@@ -77,7 +77,7 @@ export class Game {
                 }
             } else {
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is not getting out of the penalty box");
-                this.isGettingOutOfPenaltyBox = false;
+
             }
         } else {
 
