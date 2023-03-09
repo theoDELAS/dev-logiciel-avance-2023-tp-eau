@@ -138,15 +138,14 @@ export class Game {
             this._console.WriteLine('Question was incorrectly answered');
             this._console.WriteLine(this.players[this.currentPlayer].name + " was sent to the penalty box");
             this.inPenaltyBox[this.currentPlayer] = true;
-
-            this.currentPlayer += 1;
-            if (this.currentPlayer == this.players.length)
-                this.currentPlayer = 0;
-            return true;
         } else {
             this.players[this.currentPlayer].joker_is_use_now = false;
-            return false;
         }
+
+        this.currentPlayer += 1;
+        if (this.currentPlayer == this.players.length)
+            this.currentPlayer = 0;
+        return true;
     }
 
     public wasCorrectlyAnswered(): boolean {
@@ -170,10 +169,7 @@ export class Game {
                         this.currentPlayer = 0;
                     return true;
                 }
-
-
             } else {
-
                 this._console.WriteLine("Answer was corrent!!!!");
 
                 this.purses[this.currentPlayer] += 1;
@@ -190,7 +186,10 @@ export class Game {
             }
         } else {
             this.players[this.currentPlayer].joker_is_use_now = false;
-            return false;
+            this.currentPlayer += 1;
+            if (this.currentPlayer == this.players.length)
+                this.currentPlayer = 0;
+            return true;
         }
     }
 
