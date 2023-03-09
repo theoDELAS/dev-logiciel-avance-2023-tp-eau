@@ -35,3 +35,12 @@ describe('test penalty box', function () {
         expect(console.Content).toContain("is getting out of the penalty box");
     })
 });
+
+describe('Test joker', function () {
+    it("should not earn a gold when player uses a joker", function() {
+        const console = new ConsoleSpy();
+        GameRunner.main([new Player("Pat"), new Player("Sue"), new Player("Jessica")], console);
+        expect(console.Content).toContain("uses a joker");
+        expect(console.Content).toContain("doesn't earn gold this turn");
+    })
+});
