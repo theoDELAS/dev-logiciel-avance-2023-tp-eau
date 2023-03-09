@@ -195,8 +195,6 @@ export class Game {
 
 
     private useJoker(player: Player) {
-        this._console.WriteLine('--------------------');
-        this._console.WriteLine(player.joker.toString());
         if (player.joker) {
             const randomRoll = Math.floor(Math.random() * 2);
             this._console.WriteLine(randomRoll.toString());
