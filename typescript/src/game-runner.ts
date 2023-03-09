@@ -1,5 +1,6 @@
 import {Game} from './game';
 import {SystemConsole} from "./SystemConsole";
+import {Player} from "./Player";
 
 export class GameRunner {
     public static main(): void {
@@ -11,7 +12,6 @@ export class GameRunner {
         if(game.isNumberOfPlayerValid()) {
             let notAWinner;
             do {
-
                 game.roll(Math.floor(Math.random() * 6) + 1);
 
                 if (Math.floor(Math.random() * 10) == 7) {
@@ -19,7 +19,6 @@ export class GameRunner {
                 } else {
                     notAWinner = game.wasCorrectlyAnswered();
                 }
-
             } while (notAWinner);
         } else {
             game.getConsole().WriteLine("The game shouls contain 2 players minimum and 6 players maximum");
