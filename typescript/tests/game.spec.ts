@@ -26,3 +26,11 @@ describe('The test environment', function() {
         expect(console.Content).toContain("now has 6 Gold Coins.");
     });
 })
+
+describe('test penalty box', function () {
+    it("should escape from prison", function() {
+        const console = new ConsoleSpy();
+        GameRunner.main(['Jean-Pierre', "Sue", "Jessica"], console);
+        expect(console.Content).toContain("is getting out of the penalty box");
+    })
+});
