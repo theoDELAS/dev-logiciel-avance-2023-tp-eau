@@ -193,11 +193,11 @@ export class Game {
         }
     }
 
-    private useJoker(player: Player) {
+    public useJoker(player: Player) {
         if (player.joker) {
             const randomRoll = Math.floor(Math.random() * 6);
             this._console.WriteLine(randomRoll.toString());
-            if (randomRoll === 6) {
+            if (randomRoll === 1) {
                 player.joker = false;
                 player.joker_is_use_now = true
                 return true;
