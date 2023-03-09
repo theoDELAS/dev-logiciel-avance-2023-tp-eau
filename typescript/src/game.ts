@@ -16,8 +16,9 @@ export class Game {
     private _console: IConsole;
     private coinGoal: number;
 
-    constructor(console: IConsole, coinGoal: number) {
+    constructor(console: IConsole, players: Array<Player>, coinGoal: number) {
         this._console = console;
+        this.players = players;
         this.coinGoal = coinGoal;
         for (let i = 0; i < 50; i++) {
             this.popQuestions.push("Pop Question " + i);
@@ -33,6 +34,10 @@ export class Game {
 
     public getConsole() {
         return this._console;
+    }
+
+    public isCoinGoalValid() {
+        return this.coinGoal > 5;
     }
 
     public add(name: string): boolean {
