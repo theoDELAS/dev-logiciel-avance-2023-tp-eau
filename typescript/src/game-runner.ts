@@ -4,10 +4,10 @@ import {Player} from "./Player";
 import {IConsole} from "./IConsole";
 
 export class GameRunner {
-    public static main( players: string[], console?: IConsole): void {
+    public static main( players: Player[], console?: IConsole): void {
         const game = new Game(console ? console : new SystemConsole());
         for (const player of players) {
-            game.add(player);
+            game.add(player.name);
         }
 
         if(game.isNumberOfPlayerValid()) {
@@ -27,5 +27,8 @@ export class GameRunner {
     }
 }
 
-GameRunner.main(['Chet', 'Pat','Sue'], null);
+const player1 = new Player('Chet');
+const player2 = new Player('Pat');
+const player3 = new Player('Sue');
+GameRunner.main([player1, player2, player3], null);
 

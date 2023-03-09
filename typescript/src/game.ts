@@ -195,7 +195,6 @@ export class Game {
         }
     }
 
-
     private useJoker(player: Player) {
         if (player.joker) {
             const randomRoll = Math.floor(Math.random() * 2);
