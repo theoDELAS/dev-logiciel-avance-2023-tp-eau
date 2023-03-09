@@ -1,18 +1,11 @@
 import {Game} from './game';
-import {SystemConsole} from "./SystemConsole";
-import {IConsole} from "./IConsole";
-import {Player} from "./Player";
+import {GameBuilder} from "./GameBuilder";
 
 export class GameRunner {
-    public static main( players: Player[], console?: IConsole, coinGoal?: number): void {
-        const game = new Game(console ? console : new SystemConsole(), coinGoal ? coinGoal : 6);
-        if (coinGoal < 6) {
+    public static main(game: Game): void {
+        if (!game.isCoinGoalValid()) {
             game.getConsole().WriteLine("The coinGoal cannot be less than 6");
         } else {
-            for (const player of players) {
-                game.add(player.name);
-            }
-
             if(game.isNumberOfPlayerValid()) {
                 let notAWinner;
                 do {
@@ -31,8 +24,5 @@ export class GameRunner {
     }
 }
 
-const player1 = new Player('Chet');
-const player2 = new Player('Pat');
-const player3 = new Player('Sue');
-GameRunner.main([player1, player2, player3], null, null);
+GameRunner.main(new GameBuilder().build());
 
