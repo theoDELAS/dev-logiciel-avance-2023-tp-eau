@@ -6,23 +6,27 @@ import {Player} from "./Player";
 export class GameRunner {
     public static main( players: Player[], console?: IConsole, coinGoal?: number): void {
         const game = new Game(console ? console : new SystemConsole(), coinGoal ? coinGoal : 6);
-        for (const player of players) {
-            game.add(player.name);
-        }
-
-        if(game.isNumberOfPlayerValid()) {
-            let notAWinner;
-            do {
-                game.roll(Math.floor(Math.random() * 6) + 1);
-
-                if (Math.floor(Math.random() * 10) == 7) {
-                    notAWinner = game.wrongAnswer();
-                } else {
-                    notAWinner = game.wasCorrectlyAnswered();
-                }
-            } while (notAWinner);
+        if (coinGoal < 6) {
+            game.getConsole().WriteLine("The coinGoal cannot be less than 6");
         } else {
-            game.getConsole().WriteLine("The game should contain 2 players minimum and 6 players maximum");
+            for (const player of players) {
+                game.add(player.name);
+            }
+
+            if(game.isNumberOfPlayerValid()) {
+                let notAWinner;
+                do {
+                    game.roll(Math.floor(Math.random() * 6) + 1);
+
+                    if (Math.floor(Math.random() * 10) == 7) {
+                        notAWinner = game.wrongAnswer();
+                    } else {
+                        notAWinner = game.wasCorrectlyAnswered();
+                    }
+                } while (notAWinner);
+            } else {
+                game.getConsole().WriteLine("The game should contain 2 players minimum and 6 players maximum");
+            }
         }
     }
 }

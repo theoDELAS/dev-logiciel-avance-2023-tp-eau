@@ -27,14 +27,13 @@ describe('The test environment', function() {
         expect(console.Content).toContain("now has 6 Gold Coins.");
     });
 
-    it("should test four coin goal", function () {
+    it("should not run a game when four coin goal", function () {
         const console = new ConsoleSpy();
         GameRunner.main([new Player('Jean-Pierre'), new Player('Jean-Claude'), new Player('Jean-Michel'), new Player('Jean-Paul'), new Player('Jean-Christophe'), new Player('Jean-Baptiste')], console, 4);
-        expect(console.Content).not.toContain("now has 6 Gold Coins.");
-        expect(console.Content).toContain("now has 4 Gold Coins.");
+        expect(console.Content).toContain("The coinGoal cannot be less than 6");
     });
 
-    it("should test eight coin goal", function () {
+    it("should run a game when eight coin goal", function () {
         const console = new ConsoleSpy();
         GameRunner.main([new Player('Jean-Pierre'), new Player('Jean-Claude'), new Player('Jean-Michel'), new Player('Jean-Paul'), new Player('Jean-Christophe'), new Player('Jean-Baptiste')], console, 8);
         expect(console.Content).toContain("now has 8 Gold Coins.");
