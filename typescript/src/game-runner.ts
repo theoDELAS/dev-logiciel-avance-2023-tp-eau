@@ -1,11 +1,10 @@
 import {Game} from './game';
 import {SystemConsole} from "./SystemConsole";
-import {Player} from "./Player";
 import {IConsole} from "./IConsole";
 
 export class GameRunner {
-    public static main( players: string[], console?: IConsole): void {
-        const game = new Game(console ? console : new SystemConsole());
+    public static main( players: string[], console?: IConsole, coinGoal?: number): void {
+        const game = new Game(console ? console : new SystemConsole(), coinGoal ? coinGoal : 6);
         for (const player of players) {
             game.add(player);
         }
@@ -27,5 +26,5 @@ export class GameRunner {
     }
 }
 
-GameRunner.main(['Chet', 'Pat','Sue'], null);
+GameRunner.main(['Chet', 'Pat','Sue'], null, null);
 

@@ -25,6 +25,19 @@ describe('The test environment', function() {
         GameRunner.main(['Jean-Pierre', 'Jean-Claude', 'Jean-Michel', 'Jean-Paul', 'Jean-Christophe', 'Jean-Baptiste'], console);
         expect(console.Content).toContain("now has 6 Gold Coins.");
     });
+
+    it("should test four coin goal", function () {
+        const console = new ConsoleSpy();
+        GameRunner.main(['Jean-Pierre', 'Jean-Claude', 'Jean-Michel', 'Jean-Paul', 'Jean-Christophe', 'Jean-Baptiste'], console, 4);
+        expect(console.Content).not.toContain("now has 6 Gold Coins.");
+        expect(console.Content).toContain("now has 4 Gold Coins.");
+    });
+
+    it("should test eight coin goal", function () {
+        const console = new ConsoleSpy();
+        GameRunner.main(['Jean-Pierre', 'Jean-Claude', 'Jean-Michel', 'Jean-Paul', 'Jean-Christophe', 'Jean-Baptiste'], console, 8);
+        expect(console.Content).toContain("now has 8 Gold Coins.");
+    });
 })
 
 describe('test penalty box', function () {
