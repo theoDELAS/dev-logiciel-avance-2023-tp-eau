@@ -1,5 +1,3 @@
-import {describe, it} from "mocha";
-import sinon from 'sinon';
 import {ConsoleSpy} from "./ConsoleSpy";
 import {Game} from "../src/game";
 import * as fs from "fs";
