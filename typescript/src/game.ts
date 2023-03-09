@@ -14,9 +14,11 @@ export class Game {
     private sportsQuestions: Array<string> = [];
     private rockQuestions: Array<string> = [];
     private _console: IConsole;
+    private coinGoal: number;
 
-    constructor(console: IConsole) {
+    constructor(console: IConsole, coinGoal: number) {
         this._console = console;
+        this.coinGoal = coinGoal;
         for (let i = 0; i < 50; i++) {
             this.popQuestions.push("Pop Question " + i);
             this.scienceQuestions.push("Science Question " + i);
@@ -130,7 +132,7 @@ export class Game {
     }
 
     private didPlayerWin(): boolean {
-        return !(this.players[this.currentPlayer].gold == 6)
+        return !(this.players[this.currentPlayer].gold == this.coinGoal)
     }
 
     public wrongAnswer(): boolean {
