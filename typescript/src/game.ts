@@ -50,7 +50,7 @@ export class Game {
     }
 
     public isNumberOfPlayerValid() {
-        return this.howManyPlayers() >= 2 || this.howManyPlayers() <= 6;
+        return this.howManyPlayers() >= 2 && this.howManyPlayers() <= 6;
     }
 
     public roll(roll: number) {
