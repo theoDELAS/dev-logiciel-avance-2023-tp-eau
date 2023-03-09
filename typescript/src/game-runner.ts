@@ -1,13 +1,14 @@
 import {Game} from './game';
 import {SystemConsole} from "./SystemConsole";
 import {Player} from "./Player";
+import {IConsole} from "./IConsole";
 
 export class GameRunner {
-    public static main(): void {
-        const game = new Game(new SystemConsole());
-        game.add("Chet");
-        game.add("Pat");
-        game.add("Sue");
+    public static main( players: string[], console?: IConsole): void {
+        const game = new Game(console ? console : new SystemConsole());
+        for (const player of players) {
+            game.add(player);
+        }
 
         if(game.isNumberOfPlayerValid()) {
             let notAWinner;
@@ -26,6 +27,5 @@ export class GameRunner {
     }
 }
 
-GameRunner.main();
+GameRunner.main(['Chet', 'Pat','Sue'], null);
 
-  
