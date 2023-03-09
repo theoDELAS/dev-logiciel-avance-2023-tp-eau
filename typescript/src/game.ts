@@ -74,6 +74,7 @@ export class Game {
                     this.askQuestion();
                 } else {
                     this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
+                    this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
                 }
             } else {
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is not getting out of the penalty box");
@@ -92,6 +93,7 @@ export class Game {
                 this.askQuestion();
             } else {
                 this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
+                this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
             }
         }
     }
