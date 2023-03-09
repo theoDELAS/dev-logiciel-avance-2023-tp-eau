@@ -5,7 +5,6 @@ export class Game {
 
     private players: Array<Player> = [];
     private places: Array<number> = [];
-    private purses: Array<number> = [];
     private inPenaltyBox: Array<boolean> = [];
     private currentPlayer: number = 0;
     private isGettingOutOfPenaltyBox: boolean = false;
@@ -37,7 +36,6 @@ export class Game {
     public add(name: string): boolean {
         this.players.push(new Player(name));
         this.places[this.howManyPlayers()] = 0;
-        this.purses[this.howManyPlayers()] = 0;
         this.inPenaltyBox[this.howManyPlayers()] = false;
 
         this._console.WriteLine(name + " was added");
@@ -132,7 +130,7 @@ export class Game {
     }
 
     private didPlayerWin(): boolean {
-        return !(this.purses[this.currentPlayer] == 6)
+        return !(this.players[this.currentPlayer].gold == 6)
     }
 
     public wrongAnswer(): boolean {
@@ -155,9 +153,9 @@ export class Game {
             if (this.inPenaltyBox[this.currentPlayer]) {
                 if (this.isGettingOutOfPenaltyBox) {
                     this._console.WriteLine('Answer was correct!!!!');
-                    this.purses[this.currentPlayer] += 1;
+                    this.players[this.currentPlayer].gold += 1;
                     this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
-                        this.purses[this.currentPlayer] + " Gold Coins.");
+                        this.players[this.currentPlayer].gold + " Gold Coins.");
 
                     let winner = this.didPlayerWin();
                     this.currentPlayer += 1;
@@ -174,9 +172,9 @@ export class Game {
             } else {
                 this._console.WriteLine("Answer was corrent!!!!");
 
-                this.purses[this.currentPlayer] += 1;
+                this.players[this.currentPlayer].gold += 1;
                 this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
-                    this.purses[this.currentPlayer] + " Gold Coins.");
+                    this.players[this.currentPlayer].gold + " Gold Coins.");
 
                 let winner = this.didPlayerWin();
 
@@ -197,9 +195,9 @@ export class Game {
 
     private useJoker(player: Player) {
         if (player.joker) {
-            const randomRoll = Math.floor(Math.random() * 2);
+            const randomRoll = Math.floor(Math.random() * 6);
             this._console.WriteLine(randomRoll.toString());
-            if (randomRoll === 1) {
+            if (randomRoll === 6) {
                 player.joker = false;
                 player.joker_is_use_now = true
                 return true;
