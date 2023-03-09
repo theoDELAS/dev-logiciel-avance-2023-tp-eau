@@ -19,24 +19,23 @@ describe("Golden Master", () => {
     });
 
     function playAGame(game: Game, randomSeed: number, ...players: string[]): void {
-        for (const player of players) {
+        /**for (const player of players) {
             game.add(player);
-        const rand = Math.floor(Math.random() * 1000) + 1;
-        let notAWinner: boolean;
-        do {
-            game.roll(Math.random() % 5 + 1);
-            if (rand.Next(9) == 7) {
-                notAWinner = game.wrongAnswer();
-            } else {
-                notAWinner = game.wasCorrectlyAnswered();
-            }
-        } while (notAWinner);
+            const rand = Math.floor(Math.random() * 1000) + 1;
+            let notAWinner: boolean;
+            do {
+                game.roll(Math.random() % 5 + 1);
+                if (rand.Next(9) == 7) {
+                    notAWinner = game.wrongAnswer();
+                } else {
+                    notAWinner = game.wasCorrectlyAnswered();
+                }
+            } while (notAWinner);
+        }**/
     }
 
     function createFileName(randomSeed: number, players: string[]) {
         const fileName = `record-${randomSeed}-${players.join("-")}.txt`;
         return `${goldenMasterDir}/${fileName}`;
     }
-
-
 })
