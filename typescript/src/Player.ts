@@ -3,12 +3,14 @@ export class Player {
     private _joker: boolean;
     private _gold: number;
     private _joker_is_use_now: boolean;
+    private _place: number
     private _streak: number;
     constructor(name: string) {
         this._name = name;
         this._joker = true;
         this._joker_is_use_now = false;
         this._gold = 0;
+        this._place = 0;
         this._streak = 1;
     }
 
@@ -39,6 +41,15 @@ export class Player {
 
     set joker_is_use_now(value: boolean) {
         this._joker_is_use_now = value;
+    }
+
+
+    get place(): number {
+        return this._place;
+    }
+
+    set place(value: number) {
+        this._place = value;
     }
 
     answeredGood(goal: number) {

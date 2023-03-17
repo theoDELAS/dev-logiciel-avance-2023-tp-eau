@@ -18,7 +18,9 @@ export class Game {
 
     constructor(console: IConsole, players: Array<Player>, coinGoal: number, techno: boolean) {
         this._console = console;
-        this.players = players;
+        for (const player of players) {
+            this.add(player)
+        }
         this.coinGoal = coinGoal;
         for (let i = 0; i < 50; i++) {
             this.popQuestions.push("Pop Question " + i);
@@ -40,12 +42,12 @@ export class Game {
         return this.coinGoal > 5;
     }
 
-    public add(name: string): boolean {
-        this.players.push(new Player(name));
-        this.places[this.howManyPlayers()] = 0;
+    public add(player: Player): boolean {
+        this.players.push(player);
+        player.place = 0
         this.inPenaltyBox[this.howManyPlayers()] = false;
 
-        this._console.WriteLine(name + " was added");
+        this._console.WriteLine(player.name + " was added");
         this._console.WriteLine("They are player number " + this.players.length);
 
         return true;
@@ -60,7 +62,9 @@ export class Game {
     }
 
     public roll(roll: number) {
+        this._console.WriteLine("          ")
         this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player")
+        this._console.WriteLine('Current player => ' + this.howManyPlayers())
         this._console.WriteLine("They have rolled a " + roll)
 
         if (this.inPenaltyBox[this.currentPlayer]) {
@@ -68,12 +72,12 @@ export class Game {
                 this.inPenaltyBox[this.currentPlayer]  = false;
 
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is getting out of the penalty box");
-                this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll;
-                if (this.places[this.currentPlayer] > 11) {
-                    this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
+                this.players[this.currentPlayer].place = this.players[this.currentPlayer].place + roll;
+                if (this.players[this.currentPlayer].place > 11) {
+                    this.players[this.currentPlayer].place = this.players[this.currentPlayer].place - 12;
                 }
 
-                this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.places[this.currentPlayer]);
+                this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
                 this._console.WriteLine("The category is " + this.currentCategory());
                 if (!this.useJoker(this.players[this.currentPlayer])) {
                     this.askQuestion();
@@ -87,12 +91,12 @@ export class Game {
             }
         } else {
 
-            this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll;
-            if (this.places[this.currentPlayer] > 11) {
-                this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12;
+            this.players[this.currentPlayer].place = this.players[this.currentPlayer].place + roll;
+            if (this.players[this.currentPlayer].place > 11) {
+                this.players[this.currentPlayer].place = this.players[this.currentPlayer].place - 12;
             }
 
-            this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.places[this.currentPlayer]);
+            this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
             this._console.WriteLine("The category is " + this.currentCategory());
             if (!this.useJoker(this.players[this.currentPlayer])) {
                 this.askQuestion();
@@ -115,23 +119,23 @@ export class Game {
     }
 
     private currentCategory(): string {
-        if (this.places[this.currentPlayer] == 0)
+        if (this.players[this.currentPlayer].place == 0)
             return 'Pop';
-        if (this.places[this.currentPlayer] == 4)
+        if (this.players[this.currentPlayer].place == 4)
             return 'Pop';
-        if (this.places[this.currentPlayer] == 8)
+        if (this.players[this.currentPlayer].place == 8)
             return 'Pop';
-        if (this.places[this.currentPlayer] == 1)
+        if (this.players[this.currentPlayer].place == 1)
             return 'Science';
-        if (this.places[this.currentPlayer] == 5)
+        if (this.players[this.currentPlayer].place == 5)
             return 'Science';
-        if (this.places[this.currentPlayer] == 9)
+        if (this.players[this.currentPlayer].place == 9)
             return 'Science';
-        if (this.places[this.currentPlayer] == 2)
+        if (this.players[this.currentPlayer].place == 2)
             return 'Sports';
-        if (this.places[this.currentPlayer] == 6)
+        if (this.players[this.currentPlayer].place == 6)
             return 'Sports';
-        if (this.places[this.currentPlayer] == 10)
+        if (this.players[this.currentPlayer].place == 10)
             return 'Sports';
         return 'Rock';
     }
@@ -206,7 +210,6 @@ export class Game {
     public useJoker(player: Player) {
         if (player.joker) {
             const randomRoll = Math.floor(Math.random() * 6);
-            this._console.WriteLine(randomRoll.toString());
             if (randomRoll === 1) {
                 player.joker = false;
                 player.joker_is_use_now = true
