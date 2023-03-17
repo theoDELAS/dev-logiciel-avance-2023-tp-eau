@@ -2,6 +2,13 @@ import {IConsole} from "./IConsole";
 import {Player} from "./Player";
 
 export class Game {
+    get currentCategory(): string {
+        return this._currentCategory;
+    }
+
+    set currentCategory(value: string) {
+        this._currentCategory = value;
+    }
 
     private players: Array<Player> = [];
     private places: Array<number> = [];
@@ -15,6 +22,8 @@ export class Game {
     private rockOrTechnoQuestions: Array<string> = [];
     private _console: IConsole;
     private coinGoal: number;
+
+    private _currentCategory: string;
 
     constructor(console: IConsole, players: Array<Player>, coinGoal: number, techno: boolean) {
         this._console = console;
@@ -65,16 +74,15 @@ export class Game {
         this._console.WriteLine("          ")
         this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player")
         this._console.WriteLine("They have rolled a " + roll)
-
-        if (this.inPenaltyBox[this.currentPlayer]) {
+        this.pickCategory()
+        if (this.players[this.currentPlayer].in_penalty_box) {
             if (roll % 2 != 0) {
-                this.inPenaltyBox[this.currentPlayer]  = false;
-
+                this.players[this.currentPlayer].in_penalty_box = false;
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is getting out of the penalty box");
                 this.updatePlayerPlace(this.players[this.currentPlayer], roll);
 
                 this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
-                this._console.WriteLine("The category is " + this.currentCategory());
+                this._console.WriteLine("The category is " + this._currentCategory);
                 if (!this.useJoker(this.players[this.currentPlayer])) {
                     this.askQuestion();
                 } else {
@@ -89,7 +97,7 @@ export class Game {
             this.updatePlayerPlace(this.players[this.currentPlayer], roll);
 
             this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
-            this._console.WriteLine("The category is " + this.currentCategory());
+            this._console.WriteLine("The category is " + this._currentCategory);
             if (!this.useJoker(this.players[this.currentPlayer])) {
                 this.askQuestion();
             } else {
@@ -107,36 +115,19 @@ export class Game {
     }
 
     private askQuestion(): void {
-        if (this.currentCategory() == 'Pop')
+        if (this._currentCategory == 'Pop')
             this._console.WriteLine(this.popQuestions.shift());
-        if (this.currentCategory() == 'Science')
+        if (this._currentCategory == 'Science')
             this._console.WriteLine(this.scienceQuestions.shift());
-        if (this.currentCategory() == 'Sports')
+        if (this._currentCategory == 'Sports')
             this._console.WriteLine(this.sportsQuestions.shift());
-        if (this.currentCategory() == 'Rock')
+        if (this._currentCategory == 'Rock')
             this._console.WriteLine(this.rockOrTechnoQuestions.shift());
     }
 
-    private currentCategory(): string {
-        if (this.players[this.currentPlayer].place == 0)
-            return 'Pop';
-        if (this.players[this.currentPlayer].place == 4)
-            return 'Pop';
-        if (this.players[this.currentPlayer].place == 8)
-            return 'Pop';
-        if (this.players[this.currentPlayer].place == 1)
-            return 'Science';
-        if (this.players[this.currentPlayer].place == 5)
-            return 'Science';
-        if (this.players[this.currentPlayer].place == 9)
-            return 'Science';
-        if (this.players[this.currentPlayer].place == 2)
-            return 'Sports';
-        if (this.players[this.currentPlayer].place == 6)
-            return 'Sports';
-        if (this.players[this.currentPlayer].place == 10)
-            return 'Sports';
-        return 'Rock';
+    private pickCategory(): void {
+        const allCategory = ["Pop", "Sports", "Science", "Rock"]
+        this._currentCategory = allCategory[Math.floor(Math.random() * (allCategory.length))]
     }
 
     private didPlayerWin(): boolean {
@@ -150,6 +141,7 @@ export class Game {
             this.inPenaltyBox[this.currentPlayer] = true;
             this.players[this.currentPlayer].answeredBad();
 
+            this.players[this.currentPlayer].in_penalty_box = true;
         } else {
             this.players[this.currentPlayer].joker_is_use_now = false;
             this.players[this.currentPlayer].answeredBad();
@@ -163,7 +155,7 @@ export class Game {
 
     public wasCorrectlyAnswered(): boolean {
         if (!this.players[this.currentPlayer].joker_is_use_now) {
-            if (this.inPenaltyBox[this.currentPlayer]) {
+            if (this.players[this.currentPlayer].in_penalty_box) {
                 if (this.isGettingOutOfPenaltyBox) {
                     this._console.WriteLine('Answer was correct!!!!');
                     this.players[this.currentPlayer].answeredGood(this.coinGoal);
@@ -216,5 +208,8 @@ export class Game {
             }
         }
         return false;
+    }
+    public isInPenaltyBox(playerName: string): boolean {
+        return this.players[this.players.findIndex(i => i.name === playerName)].in_penalty_box
     }
 }
