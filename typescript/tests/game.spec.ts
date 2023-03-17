@@ -38,7 +38,7 @@ describe('The test environment', function() {
         const console = new ConsoleSpy();
         GameRunner.main(new GameBuilder().withCoinGoal(8).withCustomConsole(console).build());
         expect(console.Content).toContain("now has 8 Gold Coins.");
-        expect(console.Content).toContain("Game End");
+        expect(console.Content).toContain("Partie terminée");
     });
 
     it("should test streak", function () {
