@@ -5,6 +5,8 @@ export class Player {
     private _joker_is_use_now: boolean;
     private _place: number
     private _streak: number;
+    private _in_penalty_box: boolean
+
     constructor(name: string) {
         this._name = name;
         this._joker = true;
@@ -12,6 +14,7 @@ export class Player {
         this._gold = 0;
         this._place = 0;
         this._streak = 1;
+        this._in_penalty_box = false;
     }
 
     get name(): string {
@@ -59,5 +62,13 @@ export class Player {
 
     answeredBad() {
         this._streak = 1
+    }
+
+    get in_penalty_box(): boolean {
+        return this._in_penalty_box;
+    }
+
+    set in_penalty_box(value: boolean) {
+        this._in_penalty_box = value;
     }
 }
