@@ -2,6 +2,7 @@ import {GameRunner} from "../src/game-runner";
 import {ConsoleSpy} from "./ConsoleSpy";
 import {Player} from "../src/Player";
 import {GameBuilder} from "../src/GameBuilder";
+import {Game} from "../src/game";
 
 describe('The test environment', function() {
     it("should test one player stop game", function () {
@@ -86,3 +87,28 @@ describe('Test joker', function () {
         expect(console.Content).toContain("doesn't earn gold this turn");
     })
 });
+describe("Game", () => {
+    test("pickCategory() should choose categories randomly", () => {
+        let game = new GameBuilder().build()
+        const categories = new Set();
+
+        // Run pickCategory() 1000 times
+        for (let i = 0; i < 1000; i++) {
+            game.pickCategory();
+            categories.add(game.currentCategory);
+        }
+
+        // There should be 4 unique categories (one for each question type)
+        expect(categories.size).toBe(4);
+
+        // The categories should be distributed approximately equally
+        // @ts-ignore
+        for (const category of categories) {
+            // @ts-ignore
+            const count = [...categories].filter((c) => c === category).length;
+            expect(count).toBeCloseTo(250, 50);
+        }
+    });
+});
+
+

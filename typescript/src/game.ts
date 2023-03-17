@@ -125,7 +125,7 @@ export class Game {
             this._console.WriteLine(this.rockOrTechnoQuestions.shift());
     }
 
-    private pickCategory(): void {
+    pickCategory(): void {
         const allCategory = ["Pop", "Sports", "Science", "Rock"]
         this._currentCategory = allCategory[Math.floor(Math.random() * (allCategory.length))]
     }
