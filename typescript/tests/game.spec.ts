@@ -50,6 +50,16 @@ describe('The test environment', function() {
         GameRunner.main(new GameBuilder().withCustomConsole(console).build());
         expect(console.Content).toContain("Rock Question");
     });
+    it("should test streak", function () {
+        const mockMath = Object.create(global.Math);
+        mockMath.random = () => 0.5;
+        global.Math = mockMath;
+        const console = new ConsoleSpy();
+        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
+        expect(console.Content).toContain("Suuuuuuue now has 1 Gold Coins.");
+        expect(console.Content).toContain("Suuuuuuue now has 3 Gold Coins.");
+        expect(console.Content).not.toContain("Suuuuuuue now has 2 Gold Coins.");
+    });
 })
 
 describe('test penalty box', function () {

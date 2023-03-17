@@ -145,8 +145,11 @@ export class Game {
             this._console.WriteLine('Question was incorrectly answered');
             this._console.WriteLine(this.players[this.currentPlayer].name + " was sent to the penalty box");
             this.inPenaltyBox[this.currentPlayer] = true;
+            this.players[this.currentPlayer].answeredBad();
+
         } else {
             this.players[this.currentPlayer].joker_is_use_now = false;
+            this.players[this.currentPlayer].answeredBad();
         }
 
         this.currentPlayer += 1;
@@ -160,7 +163,7 @@ export class Game {
             if (this.inPenaltyBox[this.currentPlayer]) {
                 if (this.isGettingOutOfPenaltyBox) {
                     this._console.WriteLine('Answer was correct!!!!');
-                    this.players[this.currentPlayer].gold += 1;
+                    this.players[this.currentPlayer].answeredGood(this.coinGoal);
                     this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
                         this.players[this.currentPlayer].gold + " Gold Coins.");
 
@@ -179,7 +182,7 @@ export class Game {
             } else {
                 this._console.WriteLine("Answer was corrent!!!!");
 
-                this.players[this.currentPlayer].gold += 1;
+                this.players[this.currentPlayer].answeredGood(this.coinGoal);
                 this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
                     this.players[this.currentPlayer].gold + " Gold Coins.");
 
