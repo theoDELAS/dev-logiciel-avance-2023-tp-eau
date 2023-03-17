@@ -60,7 +60,8 @@ export class Game {
     }
 
     public roll(roll: number) {
-        this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player")
+        this._console.WriteLine("                                                              ")
+        this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player with " + this.players[this.currentPlayer].gold + ' gold')
         this._console.WriteLine("They have rolled a " + roll)
 
         if (this.inPenaltyBox[this.currentPlayer]) {
