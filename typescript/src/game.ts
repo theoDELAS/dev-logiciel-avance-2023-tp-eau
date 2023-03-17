@@ -12,11 +12,11 @@ export class Game {
     private popQuestions: Array<string> = [];
     private scienceQuestions: Array<string> = [];
     private sportsQuestions: Array<string> = [];
-    private rockQuestions: Array<string> = [];
+    private rockOrTechnoQuestions: Array<string> = [];
     private _console: IConsole;
     private coinGoal: number;
 
-    constructor(console: IConsole, players: Array<Player>, coinGoal: number) {
+    constructor(console: IConsole, players: Array<Player>, coinGoal: number, techno: boolean) {
         this._console = console;
         this.players = players;
         this.coinGoal = coinGoal;
@@ -24,12 +24,12 @@ export class Game {
             this.popQuestions.push("Pop Question " + i);
             this.scienceQuestions.push("Science Question " + i);
             this.sportsQuestions.push("Sports Question " + i);
-            this.rockQuestions.push(this.createRockQuestion(i));
+            this.rockOrTechnoQuestions.push(this.createRockOrTechnoQuestion(i, techno));
         }
     }
 
-    private createRockQuestion(index: number): string {
-        return "Rock Question " + index;
+    private createRockOrTechnoQuestion(index: number, techno: boolean): string {
+        return(techno ?  " Techno Question" : "Rock Question ") + index ;
     }
 
     public getConsole() {
@@ -111,7 +111,7 @@ export class Game {
         if (this.currentCategory() == 'Sports')
             this._console.WriteLine(this.sportsQuestions.shift());
         if (this.currentCategory() == 'Rock')
-            this._console.WriteLine(this.rockQuestions.shift());
+            this._console.WriteLine(this.rockOrTechnoQuestions.shift());
     }
 
     private currentCategory(): string {

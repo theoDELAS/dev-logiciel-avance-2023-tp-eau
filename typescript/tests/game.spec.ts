@@ -39,6 +39,17 @@ describe('The test environment', function() {
         GameRunner.main(new GameBuilder().withCoinGoal(8).withCustomConsole(console).build());
         expect(console.Content).toContain("now has 8 Gold Coins.");
     });
+
+    it("should test techno question", function () {
+        const console = new ConsoleSpy();
+        GameRunner.main(new GameBuilder().withTechnoQuestions().withCustomConsole(console).build());
+        expect(console.Content).toContain("Techno Question");
+    });
+    it("should test rock question by default", function () {
+        const console = new ConsoleSpy();
+        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
+        expect(console.Content).toContain("Rock Question");
+    });
 })
 
 describe('test penalty box', function () {
