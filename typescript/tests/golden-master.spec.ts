@@ -1,12 +1,13 @@
 import {ConsoleSpy} from "./ConsoleSpy";
 import {Game} from "../src/game";
 import * as fs from "fs";
+import {GameBuilder} from "../src/GameBuilder";
 
 const goldenMasterDir = "/Users/theodelas/ynov/dev_logi_avancee/dev-logiciel-avance-2023-tp-eau/typescript/tests/golden-master"
 describe("Golden Master", () => {
     it("should record empty game", function () {
         const spyConsole = new ConsoleSpy();
-        const game = new Game(spyConsole);
+        const game = new GameBuilder().withCustomConsole(spyConsole).build()
 
         const recordedContent = spyConsole.Content;
         fs.writeFileSync(`${goldenMasterDir}/record.txt`, recordedContent);
