@@ -7,6 +7,7 @@ export class GameBuilder {
     private players: Player[] = [new Player("Suuuuuuue"), new Player("Chet"), new Player("Pat")];
     private console: IConsole = new SystemConsole();
     private coinGoal: number = 6;
+    private technoQuestion: boolean = false;
 
     withCustomConsole(console: IConsole): GameBuilder{
         this.console = console;
@@ -23,9 +24,14 @@ export class GameBuilder {
         return this;
     }
 
+    withTechnoQuestions(){
+        this.technoQuestion = true;
+        return this;
+    }
+
     build(): Game {
         return new Game(
-            this.console, this.players, this.coinGoal
+            this.console, this.players, this.coinGoal, this.technoQuestion
         );
     }
 }
