@@ -81,6 +81,7 @@ export class Game {
                 } else {
                     this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
                     this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
+                    this._console.WriteLine(this.players[this.currentPlayer].name + ' has ' + this.players[this.currentPlayer].gold + ' gold');
                 }
             } else {
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is not getting out of the penalty box");
@@ -100,6 +101,8 @@ export class Game {
             } else {
                 this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
                 this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
+                this._console.WriteLine(this.players[this.currentPlayer].name + ' has ' + this.players[this.currentPlayer].gold + ' gold');
+
             }
         }
     }
@@ -160,17 +163,7 @@ export class Game {
         if (!this.players[this.currentPlayer].joker_is_use_now) {
             if (this.inPenaltyBox[this.currentPlayer]) {
                 if (this.isGettingOutOfPenaltyBox) {
-                    this._console.WriteLine('Answer was correct!!!!');
-                    this.players[this.currentPlayer].gold += 1;
-                    this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
-                        this.players[this.currentPlayer].gold + " Gold Coins.");
-
-                    let winner = this.didPlayerWin();
-                    this.currentPlayer += 1;
-                    if (this.currentPlayer == this.players.length)
-                        this.currentPlayer = 0;
-
-                    return winner;
+                  return this.updateCurrentPlayerWithCorrectAnswer();
                 } else {
                     this.currentPlayer += 1;
                     if (this.currentPlayer == this.players.length)
@@ -178,19 +171,7 @@ export class Game {
                     return true;
                 }
             } else {
-                this._console.WriteLine("Answer was corrent!!!!");
-
-                this.players[this.currentPlayer].gold += 1;
-                this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
-                    this.players[this.currentPlayer].gold + " Gold Coins.");
-
-                let winner = this.didPlayerWin();
-
-                this.currentPlayer += 1;
-                if (this.currentPlayer == this.players.length)
-                    this.currentPlayer = 0;
-
-                return winner;
+                return this.updateCurrentPlayerWithCorrectAnswer();
             }
         } else {
             this.players[this.currentPlayer].joker_is_use_now = false;
@@ -201,10 +182,23 @@ export class Game {
         }
     }
 
+    private updateCurrentPlayerWithCorrectAnswer() {
+        this._console.WriteLine('Answer was correct!!!!');
+        this.players[this.currentPlayer].gold += 1;
+        this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
+            this.players[this.currentPlayer].gold + " Gold Coins.");
+
+        let winner = this.didPlayerWin();
+        this.currentPlayer += 1;
+        if (this.currentPlayer == this.players.length)
+            this.currentPlayer = 0;
+
+        return winner;
+    }
+
     public useJoker(player: Player) {
         if (player.joker) {
             const randomRoll = Math.floor(Math.random() * 6);
-            this._console.WriteLine(randomRoll.toString());
             if (randomRoll === 1) {
                 player.joker = false;
                 player.joker_is_use_now = true
