@@ -87,6 +87,17 @@ describe('Test joker', function () {
         expect(console.Content).toContain("doesn't earn gold this turn");
     })
 });
+
+describe('Test quit game', function () {
+    it("a player can quit game", function() {
+        const console = new ConsoleSpy();
+        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
+        expect(console.Content).toContain("quit the game");
+        expect(console.Content).toContain("2 players in game");
+        //expect(console.Content).toContain("only one player left, the game will stop");
+    })
+});
+
 describe("Game", () => {
     test("pickCategory() should choose categories randomly", () => {
         let game = new GameBuilder().build()

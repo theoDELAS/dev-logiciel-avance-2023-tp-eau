@@ -9,8 +9,6 @@
   },
   "author": "Felix Blechschmitt",
   "license": "GPL-3.0",
-
-
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "jest": "^29.4.3",

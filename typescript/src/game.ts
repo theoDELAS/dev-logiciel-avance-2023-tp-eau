@@ -71,14 +71,30 @@ export class Game {
     }
 
     public roll(roll: number) {
-        this._console.WriteLine("          ")
-        this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player")
-        this._console.WriteLine("They have rolled a " + roll)
-        this.pickCategory()
-        if (this.players[this.currentPlayer].in_penalty_box) {
-            if (roll % 2 != 0) {
-                this.players[this.currentPlayer].in_penalty_box = false;
-                this._console.WriteLine(this.players[this.currentPlayer].name + " is getting out of the penalty box");
+        if (this.players[this.currentPlayer] !== undefined) {
+            this._console.WriteLine("          ")
+            this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player")
+            this._console.WriteLine("They have rolled a " + roll)
+            this.pickCategory()
+            if (this.players[this.currentPlayer].in_penalty_box) {
+                if (roll % 2 != 0) {
+                    this.players[this.currentPlayer].in_penalty_box = false;
+                    this._console.WriteLine(this.players[this.currentPlayer].name + " is getting out of the penalty box");
+                    this.updatePlayerPlace(this.players[this.currentPlayer], roll);
+
+                    this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
+                    this._console.WriteLine("The category is " + this._currentCategory);
+                    if (!this.useJoker(this.players[this.currentPlayer])) {
+                        this.askQuestion();
+                    } else {
+                        this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
+                        this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
+                    }
+                } else {
+                    this._console.WriteLine(this.players[this.currentPlayer].name + " is not getting out of the penalty box");
+
+                }
+            } else {
                 this.updatePlayerPlace(this.players[this.currentPlayer], roll);
 
                 this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
@@ -89,20 +105,6 @@ export class Game {
                     this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
                     this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
                 }
-            } else {
-                this._console.WriteLine(this.players[this.currentPlayer].name + " is not getting out of the penalty box");
-
-            }
-        } else {
-            this.updatePlayerPlace(this.players[this.currentPlayer], roll);
-
-            this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
-            this._console.WriteLine("The category is " + this._currentCategory);
-            if (!this.useJoker(this.players[this.currentPlayer])) {
-                this.askQuestion();
-            } else {
-                this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
-                this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
             }
         }
     }
@@ -115,14 +117,23 @@ export class Game {
     }
 
     private askQuestion(): void {
-        if (this._currentCategory == 'Pop')
-            this._console.WriteLine(this.popQuestions.shift());
-        if (this._currentCategory == 'Science')
-            this._console.WriteLine(this.scienceQuestions.shift());
-        if (this._currentCategory == 'Sports')
-            this._console.WriteLine(this.sportsQuestions.shift());
-        if (this._currentCategory == 'Rock')
-            this._console.WriteLine(this.rockOrTechnoQuestions.shift());
+        if (!this.userQuitGame(this.players[this.currentPlayer])) {
+            if (this._currentCategory == 'Pop')
+                this._console.WriteLine(this.popQuestions.shift());
+            if (this._currentCategory == 'Science')
+                this._console.WriteLine(this.scienceQuestions.shift());
+            if (this._currentCategory == 'Sports')
+                this._console.WriteLine(this.sportsQuestions.shift());
+            if (this._currentCategory == 'Rock')
+                this._console.WriteLine(this.rockOrTechnoQuestions.shift());
+        } else {
+            this._console.WriteLine(this.players[this.currentPlayer].name + ' quit the game');
+            this.players = this.players.filter(item => item !== this.players[this.currentPlayer]);
+            this._console.WriteLine(this.players.length + ' players in game');
+            if (this.players.length == 1) {
+                this._console.WriteLine('only one player left, the game will stop');
+            }
+        }
     }
 
     pickCategory(): void {
@@ -131,71 +142,80 @@ export class Game {
     }
 
     private didPlayerWin(): boolean {
+        if (this.players.length == 1) {
+            return true
+        }
         return !(this.players[this.currentPlayer].gold == this.coinGoal)
     }
 
     public wrongAnswer(): boolean {
-        if (!this.players[this.currentPlayer].joker_is_use_now) {
-            this._console.WriteLine('Question was incorrectly answered');
-            this._console.WriteLine(this.players[this.currentPlayer].name + " was sent to the penalty box");
-            this.inPenaltyBox[this.currentPlayer] = true;
-            this.players[this.currentPlayer].answeredBad();
+        if (this.players[this.currentPlayer] !== undefined) {
+            if (!this.players[this.currentPlayer].joker_is_use_now) {
+                this._console.WriteLine('Question was incorrectly answered');
+                this._console.WriteLine(this.players[this.currentPlayer].name + " was sent to the penalty box");
+                this.inPenaltyBox[this.currentPlayer] = true;
+                this.players[this.currentPlayer].answeredBad();
 
-            this.players[this.currentPlayer].in_penalty_box = true;
-        } else {
-            this.players[this.currentPlayer].joker_is_use_now = false;
-            this.players[this.currentPlayer].answeredBad();
-        }
-
-        this.currentPlayer += 1;
-        if (this.currentPlayer == this.players.length)
-            this.currentPlayer = 0;
-        return true;
-    }
-
-    public wasCorrectlyAnswered(): boolean {
-        if (!this.players[this.currentPlayer].joker_is_use_now) {
-            if (this.players[this.currentPlayer].in_penalty_box) {
-                if (this.isGettingOutOfPenaltyBox) {
-                    this._console.WriteLine('Answer was correct!!!!');
-                    this.players[this.currentPlayer].answeredGood(this.coinGoal);
-                    this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
-                        this.players[this.currentPlayer].gold + " Gold Coins.");
-
-                    let winner = this.didPlayerWin();
-                    this.currentPlayer += 1;
-                    if (this.currentPlayer == this.players.length)
-                        this.currentPlayer = 0;
-
-                    return winner;
-                } else {
-                    this.currentPlayer += 1;
-                    if (this.currentPlayer == this.players.length)
-                        this.currentPlayer = 0;
-                    return true;
-                }
+                this.players[this.currentPlayer].in_penalty_box = true;
             } else {
-                this._console.WriteLine("Answer was corrent!!!!");
-
-                this.players[this.currentPlayer].answeredGood(this.coinGoal);
-                this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
-                    this.players[this.currentPlayer].gold + " Gold Coins.");
-
-                let winner = this.didPlayerWin();
-
-                this.currentPlayer += 1;
-                if (this.currentPlayer == this.players.length)
-                    this.currentPlayer = 0;
-
-                return winner;
+                this.players[this.currentPlayer].joker_is_use_now = false;
+                this.players[this.currentPlayer].answeredBad();
             }
-        } else {
-            this.players[this.currentPlayer].joker_is_use_now = false;
+
             this.currentPlayer += 1;
             if (this.currentPlayer == this.players.length)
                 this.currentPlayer = 0;
             return true;
         }
+        return false;
+    }
+
+    public wasCorrectlyAnswered(): boolean {
+        if (this.players[this.currentPlayer] !== undefined) {
+            if (!this.players[this.currentPlayer].joker_is_use_now) {
+                if (this.players[this.currentPlayer].in_penalty_box) {
+                    if (this.isGettingOutOfPenaltyBox) {
+                        this._console.WriteLine('Answer was correct!!!!');
+                        this.players[this.currentPlayer].answeredGood(this.coinGoal);
+                        this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
+                            this.players[this.currentPlayer].gold + " Gold Coins.");
+
+                        let winner = this.didPlayerWin();
+                        this.currentPlayer += 1;
+                        if (this.currentPlayer == this.players.length)
+                            this.currentPlayer = 0;
+
+                        return winner;
+                    } else {
+                        this.currentPlayer += 1;
+                        if (this.currentPlayer == this.players.length)
+                            this.currentPlayer = 0;
+                        return true;
+                    }
+                } else {
+                    this._console.WriteLine("Answer was corrent!!!!");
+
+                    this.players[this.currentPlayer].answeredGood(this.coinGoal);
+                    this._console.WriteLine(this.players[this.currentPlayer].name + " now has " +
+                        this.players[this.currentPlayer].gold + " Gold Coins.");
+
+                    let winner = this.didPlayerWin();
+
+                    this.currentPlayer += 1;
+                    if (this.currentPlayer == this.players.length)
+                        this.currentPlayer = 0;
+
+                    return winner;
+                }
+            } else {
+                this.players[this.currentPlayer].joker_is_use_now = false;
+                this.currentPlayer += 1;
+                if (this.currentPlayer == this.players.length)
+                    this.currentPlayer = 0;
+                return true;
+            }
+        }
+        return true;
     }
 
     public useJoker(player: Player) {
@@ -211,5 +231,17 @@ export class Game {
     }
     public isInPenaltyBox(playerName: string): boolean {
         return this.players[this.players.findIndex(i => i.name === playerName)].in_penalty_box
+    }
+
+    public userQuitGame(player: Player) {
+        if (player.inGame) {
+            const randomRoll = Math.floor(Math.random() * 10);
+            this._console.WriteLine(randomRoll.toString());
+            if (randomRoll === 1) {
+                player.inGame = false
+                return true;
+            }
+        }
+        return false;
     }
 }
