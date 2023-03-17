@@ -38,18 +38,9 @@ describe('The test environment', function() {
         const console = new ConsoleSpy();
         GameRunner.main(new GameBuilder().withCoinGoal(8).withCustomConsole(console).build());
         expect(console.Content).toContain("now has 8 Gold Coins.");
+        expect(console.Content).toContain("Game End");
     });
 
-    it("should test techno question", function () {
-        const console = new ConsoleSpy();
-        GameRunner.main(new GameBuilder().withTechnoQuestions().withCustomConsole(console).build());
-        expect(console.Content).toContain("Techno Question");
-    });
-    it("should test rock question by default", function () {
-        const console = new ConsoleSpy();
-        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
-        expect(console.Content).toContain("Rock Question");
-    });
     it("should test streak", function () {
         const mockMath = Object.create(global.Math);
         mockMath.random = () => 0.5;
@@ -61,6 +52,23 @@ describe('The test environment', function() {
         expect(console.Content).not.toContain("Suuuuuuue now has 2 Gold Coins.");
     });
 })
+describe('test rock techno question', function () {
+    it("should test techno question", function () {
+        const console = new ConsoleSpy();
+        GameRunner.main(new GameBuilder().withTechnoQuestions().withCustomConsole(console).build());
+        expect(console.Content).toContain("Techno Question");
+        expect(console.Content).not.toContain("Rock Question");
+
+    });
+    it("should test rock question by default", function () {
+        const console = new ConsoleSpy();
+        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
+        expect(console.Content).toContain("Rock Question");
+        expect(console.Content).not.toContain("Techno Question");
+
+    });
+});
+
 
 describe('test penalty box', function () {
     it("should escape from prison", function() {
