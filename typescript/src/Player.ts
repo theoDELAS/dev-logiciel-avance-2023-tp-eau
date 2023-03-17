@@ -3,11 +3,13 @@ export class Player {
     private _joker: boolean;
     private _gold: number;
     private _joker_is_use_now: boolean;
+    private _in_game: boolean;
     constructor(name: string) {
         this._name = name;
         this._joker = true;
         this._joker_is_use_now = false;
         this._gold = 0;
+        this._in_game = true;
     }
 
     get name(): string {
@@ -24,6 +26,14 @@ export class Player {
 
     set joker(value: boolean) {
         this._joker = value;
+    }
+
+    get inGame(): boolean {
+        return this._in_game;
+    }
+
+    set inGame(value: boolean) {
+        this._in_game = value;
     }
 
     get gold(): number {
