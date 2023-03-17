@@ -17,6 +17,7 @@ export class GameRunner {
                         notAWinner = game.wasCorrectlyAnswered();
                     }
                 } while (notAWinner);
+                game.getConsole().WriteLine("Partie terminée");
             } else {
                 game.getConsole().WriteLine("The game should contain 2 players minimum and 6 players maximum");
             }
