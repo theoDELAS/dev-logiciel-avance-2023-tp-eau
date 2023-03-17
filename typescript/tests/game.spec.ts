@@ -65,7 +65,7 @@ describe('The test environment', function() {
 describe('test penalty box', function () {
     it("should escape from prison", function() {
         const console = new ConsoleSpy();
-        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
+        GameRunner.main(new GameBuilder().withCoinGoal(20).withCustomConsole(console).build());
         expect(console.Content).toContain("is getting out of the penalty box");
     })
 });
@@ -73,7 +73,7 @@ describe('test penalty box', function () {
 describe('Test joker', function () {
     it("should not earn a gold when player uses a joker", function() {
         const console = new ConsoleSpy();
-        GameRunner.main(new GameBuilder().withCustomConsole(console).build());
+        GameRunner.main(new GameBuilder().withCoinGoal(20).withCustomConsole(console).build());
         expect(console.Content).toContain("uses a joker");
         expect(console.Content).toContain("doesn't earn gold this turn");
     })

@@ -11,7 +11,7 @@ export class GameRunner {
                 do {
                     game.roll(Math.floor(Math.random() * 6) + 1);
 
-                    if (Math.floor(Math.random() * 10) == 7) {
+                    if (Math.floor(Math.random() * 4) == 1) {
                         notAWinner = game.wrongAnswer();
                     } else {
                         notAWinner = game.wasCorrectlyAnswered();
@@ -24,5 +24,5 @@ export class GameRunner {
     }
 }
 
-GameRunner.main(new GameBuilder().build());
+GameRunner.main(new GameBuilder().withCoinGoal(20).build());
 

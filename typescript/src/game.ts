@@ -64,7 +64,6 @@ export class Game {
     public roll(roll: number) {
         this._console.WriteLine("          ")
         this._console.WriteLine(this.players[this.currentPlayer].name + " is the current player")
-        this._console.WriteLine('Current player => ' + this.howManyPlayers())
         this._console.WriteLine("They have rolled a " + roll)
 
         if (this.inPenaltyBox[this.currentPlayer]) {
@@ -72,10 +71,7 @@ export class Game {
                 this.inPenaltyBox[this.currentPlayer]  = false;
 
                 this._console.WriteLine(this.players[this.currentPlayer].name + " is getting out of the penalty box");
-                this.players[this.currentPlayer].place = this.players[this.currentPlayer].place + roll;
-                if (this.players[this.currentPlayer].place > 11) {
-                    this.players[this.currentPlayer].place = this.players[this.currentPlayer].place - 12;
-                }
+                this.updatePlayerPlace(this.players[this.currentPlayer], roll);
 
                 this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
                 this._console.WriteLine("The category is " + this.currentCategory());
@@ -90,11 +86,7 @@ export class Game {
 
             }
         } else {
-
-            this.players[this.currentPlayer].place = this.players[this.currentPlayer].place + roll;
-            if (this.players[this.currentPlayer].place > 11) {
-                this.players[this.currentPlayer].place = this.players[this.currentPlayer].place - 12;
-            }
+            this.updatePlayerPlace(this.players[this.currentPlayer], roll);
 
             this._console.WriteLine(this.players[this.currentPlayer].name + "'s new location is " + this.players[this.currentPlayer].place);
             this._console.WriteLine("The category is " + this.currentCategory());
@@ -104,6 +96,13 @@ export class Game {
                 this._console.WriteLine(this.players[this.currentPlayer].name + ' uses a joker');
                 this._console.WriteLine(this.players[this.currentPlayer].name + ' doesn\'t earn gold this turn');
             }
+        }
+    }
+
+    private updatePlayerPlace(player: Player, roll: number) {
+        player.place += roll;
+        if (player.place > 11) {
+            player.place -= 12;
         }
     }
 
@@ -209,7 +208,7 @@ export class Game {
 
     public useJoker(player: Player) {
         if (player.joker) {
-            const randomRoll = Math.floor(Math.random() * 6);
+            const randomRoll = Math.floor(Math.random() * 3);
             if (randomRoll === 1) {
                 player.joker = false;
                 player.joker_is_use_now = true
